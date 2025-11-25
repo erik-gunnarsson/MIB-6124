@@ -1,0 +1,186 @@
+{
+  "readings": [
+    {
+      "reading": "Basu – Prelude to Political Economy",
+      "category": "Political Economy",
+      "section": "L1-4: Game Theory & Institutions",
+      "description": "Uses game theory & incentives, but very reflective and critical; firmly about big macro political-economy questions.",
+      "dimensions": {
+        "culture_power": 7,
+        "micro_macro": 8,
+        "formal_informal": 6,
+        "self_enforcing_external": 6,
+        "cooperation_conflict": 7,
+        "efficiency_conflict_view": 7
+      }
+    },
+    {
+      "reading": "Bowles – Prologue in Microeconomics",
+      "category": "Behavioral & Social",
+      "section": "L1-4: Game Theory & Institutions",
+      "description": "Middle on culture vs incentives: emphasizes preferences, norms and payoffs; links micro behavior to big outcomes.",
+      "dimensions": {
+        "culture_power": 5,
+        "micro_macro": 7,
+        "formal_informal": 5,
+        "self_enforcing_external": 6,
+        "cooperation_conflict": 5,
+        "efficiency_conflict_view": 5
+      }
+    },
+    {
+      "reading": "Bowles – Social Institutions and Institutional Design",
+      "category": "Behavioral & Social",
+      "section": "L1-4: Game Theory & Institutions",
+      "description": "Slightly more on the culture/norms side than Prologue; still institutional design, but with strong emphasis on social norms & fairness.",
+      "dimensions": {
+        "culture_power": 4,
+        "micro_macro": 6,
+        "formal_informal": 4,
+        "self_enforcing_external": 7,
+        "cooperation_conflict": 4,
+        "efficiency_conflict_view": 4
+      }
+    },
+    {
+      "reading": "Dixit – Lawlessness and Economics (ch.1)",
+      "category": "Political Economy",
+      "section": "L1-4: Game Theory & Institutions",
+      "description": "Very incentives/enforcement focused (what happens when state enforcement is weak); applied to broader, semi-macro settings.",
+      "dimensions": {
+        "culture_power": 9,
+        "micro_macro": 7,
+        "formal_informal": 6,
+        "self_enforcing_external": 4,
+        "cooperation_conflict": 7,
+        "efficiency_conflict_view": 6
+      }
+    },
+    {
+      "reading": "Roine – Why Isn't the Whole World Rich?",
+      "category": "Political Economy",
+      "section": "L1-4: Game Theory & Institutions",
+      "description": "Strong institutional + historical + inequality focus; much more about structural macro differences than micro norms.",
+      "dimensions": {
+        "culture_power": 7,
+        "micro_macro": 9,
+        "formal_informal": 7,
+        "self_enforcing_external": 5,
+        "cooperation_conflict": 8,
+        "efficiency_conflict_view": 8
+      }
+    },
+    {
+      "reading": "Greif – Institutions and the Path to the Modern Economy (2006)",
+      "category": "Historical",
+      "section": "L5: History & Emergence",
+      "description": "Balanced: rules + beliefs + organizations (so middle-ish on X); spans from medieval trade micro to long-run European macro.",
+      "dimensions": {
+        "culture_power": 6,
+        "micro_macro": 7,
+        "formal_informal": 5,
+        "self_enforcing_external": 6,
+        "cooperation_conflict": 5,
+        "efficiency_conflict_view": 5
+      }
+    },
+    {
+      "reading": "Greif – Reputation & Coalitions in Medieval Trade (1989, Maghribi)",
+      "category": "Historical",
+      "section": "L5: History & Emergence",
+      "description": "Still a blend of beliefs and incentives (so central-ish on X), but clearly more micro: specific trader coalition and repeated-game structure.",
+      "dimensions": {
+        "culture_power": 6,
+        "micro_macro": 4,
+        "formal_informal": 3,
+        "self_enforcing_external": 8,
+        "cooperation_conflict": 3,
+        "efficiency_conflict_view": 4
+      }
+    },
+    {
+      "reading": "Mokyr – Cultural Entrepreneurs and the Origins of Modern Economic Growth (2013)",
+      "category": "Cultural & Innovation",
+      "section": "L5: History & Emergence",
+      "description": "Heavy on culture, ideas, beliefs, pro-innovation attitudes; macro history of growth and the IR.",
+      "dimensions": {
+        "culture_power": 3,
+        "micro_macro": 9,
+        "formal_informal": 4,
+        "self_enforcing_external": 7,
+        "cooperation_conflict": 3,
+        "efficiency_conflict_view": 3
+      }
+    },
+    {
+      "reading": "North & Weingast – Constitutions and Commitment (1989)",
+      "category": "Political Economy",
+      "section": "L5: History & Emergence",
+      "description": "Strong focus on credible commitment, constraints on rulers, capital markets, and national growth after the Glorious Revolution.",
+      "dimensions": {
+        "culture_power": 8,
+        "micro_macro": 9,
+        "formal_informal": 9,
+        "self_enforcing_external": 3,
+        "cooperation_conflict": 6,
+        "efficiency_conflict_view": 6
+      }
+    },
+    {
+      "reading": "Acemoglu, Johnson & Robinson – Institutions as the Fundamental Cause (2005)",
+      "category": "Political Economy",
+      "section": "L6-7: Long-Run Development",
+      "description": "As far toward 'power & incentives & macro' as you can go: institutions = political power + distribution + colonial history.",
+      "dimensions": {
+        "culture_power": 10,
+        "micro_macro": 10,
+        "formal_informal": 8,
+        "self_enforcing_external": 2,
+        "cooperation_conflict": 9,
+        "efficiency_conflict_view": 10
+      }
+    },
+    {
+      "reading": "Acemoglu & Robinson – Political Losers as a Barrier (2000)",
+      "category": "Political Economy",
+      "section": "L6-7: Long-Run Development",
+      "description": "Same underlying view: elites block change; very power/conflict-oriented; slightly less broad than the 2005 handbook piece.",
+      "dimensions": {
+        "culture_power": 10,
+        "micro_macro": 9,
+        "formal_informal": 7,
+        "self_enforcing_external": 3,
+        "cooperation_conflict": 9,
+        "efficiency_conflict_view": 9
+      }
+    },
+    {
+      "reading": "Ostrom – Collective Action and Evolution of Social Norms (2000)",
+      "category": "Behavioral & Social",
+      "section": "L6-7: Long-Run Development",
+      "description": "Norms/reciprocity/self-governance (so lower on X); mainly groups & communities, experiments & local commons (so lower on Y).",
+      "dimensions": {
+        "culture_power": 4,
+        "micro_macro": 4,
+        "formal_informal": 2,
+        "self_enforcing_external": 9,
+        "cooperation_conflict": 2,
+        "efficiency_conflict_view": 3
+      }
+    },
+    {
+      "reading": "Nobel 2025 Scientific Background (Aghion, Howitt, Mokyr)",
+      "category": "Cultural & Innovation",
+      "section": "L6-7: Long-Run Development",
+      "description": "Mix of growth-through-incentives (Aghion–Howitt creative destruction) and cultural/scientific preconditions (Mokyr); clearly macro frontier growth.",
+      "dimensions": {
+        "culture_power": 6,
+        "micro_macro": 9,
+        "formal_informal": 6,
+        "self_enforcing_external": 5,
+        "cooperation_conflict": 5,
+        "efficiency_conflict_view": 5
+      }
+    }
+  ]
+}

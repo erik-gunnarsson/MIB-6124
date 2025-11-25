@@ -1,0 +1,69 @@
+{
+  "axes": {
+    "culture_power": {
+      "name": "Culture vs Power",
+      "short_name": "Culture/Power",
+      "description": "What Drives Institutions?",
+      "min_label": "Pure Culture",
+      "max_label": "Pure Power",
+      "min_description": "Norms, beliefs, socialization, cultural attitudes",
+      "max_description": "Incentives, enforcement, political power, rents",
+      "color": "#2A73FF"
+    },
+    "micro_macro": {
+      "name": "Micro vs Macro",
+      "short_name": "Micro/Macro",
+      "description": "What Level/Scale?",
+      "min_label": "Pure Micro",
+      "max_label": "Pure Macro",
+      "min_description": "Individuals, communities, specific games, lab/village",
+      "max_description": "States, regimes, global development, centuries",
+      "color": "#2ACC88"
+    },
+    "formal_informal": {
+      "name": "Formal vs Informal",
+      "short_name": "Formal/Informal",
+      "description": "Type of Institution",
+      "min_label": "Informal",
+      "max_label": "Formal",
+      "min_description": "Norms, customs, conventions, unwritten rules",
+      "max_description": "Laws, constitutions, formal rules, codified regulations",
+      "color": "#FF6B6B"
+    },
+    "self_enforcing_external": {
+      "name": "Self-Enforcing vs Externally-Enforced",
+      "short_name": "Enforcement",
+      "description": "Enforcement Mechanism",
+      "min_label": "Externally-Enforced",
+      "max_label": "Self-Enforcing",
+      "min_description": "Third-party enforcement, state coercion, external authority",
+      "max_description": "Self-sustaining, reputation-based, internalized norms",
+      "color": "#FFD93D"
+    },
+    "cooperation_conflict": {
+      "name": "Cooperation vs Conflict",
+      "short_name": "Cooperation/Conflict",
+      "description": "Social Dynamics",
+      "min_label": "Cooperation",
+      "max_label": "Conflict",
+      "min_description": "Mutual benefit, coordination, collective action",
+      "max_description": "Distributional struggle, power conflicts, zero-sum",
+      "color": "#A78BFA"
+    },
+    "efficiency_conflict_view": {
+      "name": "Efficiency View vs Social Conflict View",
+      "short_name": "Efficiency/Conflict View",
+      "description": "Analytical Perspective",
+      "min_label": "Efficiency View",
+      "max_label": "Conflict View",
+      "min_description": "Institutions solve coordination problems, Pareto improvements",
+      "max_description": "Institutions reflect power struggles, distributional battles",
+      "color": "#F97316"
+    }
+  },
+  "default_axes": {
+    "x": "culture_power",
+    "y": "micro_macro",
+    "z": "formal_informal"
+  }
+}
