@@ -60,7 +60,9 @@ def load_institutional_readings_data():
             "reading": reading["reading"],
             "category": reading["category"],
             "section": reading["section"],
-            "description": reading["description"]
+            "description": reading["description"],
+            "one_liner": reading.get("one_liner"),  
+            "author": reading["author"]
         }
         # Add all dimensional values
         for dim_key, dim_value in reading["dimensions"].items():
@@ -79,7 +81,7 @@ default_axes = axis_definitions["default_axes"]
 
 # Get unique values for filters
 available_sections = sorted(readings_df['section'].unique().tolist())
-available_categories = sorted(readings_df['category'].unique().tolist())
+available_authors = sorted(readings_df['author'].unique().tolist())
 
 # No login required for this version
 
@@ -98,7 +100,7 @@ dashboard_layout = html.Div([
                     "font-weight": "700",
                     "margin-bottom": "10px"
                 }),
-                html.P("Interactive Visualization of Course Readings", style={
+                html.P("Interactive Multi-Dimensional Visualization of Course Readings", style={
                     "color": "#555457",
                     "text-align": "center",
                     "font-size": "18px",
@@ -106,7 +108,7 @@ dashboard_layout = html.Div([
                 }),
             ]),
         ], style={"padding": "40px 20px"}),
-    ], style={"background": "linear-gradient(135deg, #F8F3EC 0%, #EAEEF5 100%)", "border-bottom": "2px solid #C1CDE4"}),
+    ], style={"background": "#F8F3EC", "border-bottom": "2px solid #C1CDE4"}),
     
     # Content container
     html.Div(id="main-content"),
@@ -163,32 +165,6 @@ def render_main_content(_):
                 ], style={"flex": "1", "margin-left": "10px"}),
             ], style={"display": "flex"}),
         ], style={"padding": "30px", "margin": "20px", "background": "white", "border-radius": "12px", "box-shadow": "0 2px 8px rgba(0,0,0,0.1)"}),
-        
-        # Dynamic Explanation section
-        html.Div(id="axis-explanation", children=[]),
-        
-        # Filters section
-        html.Div([
-            html.Div([
-                html.Label("Filter by Course Section:", style={"font-weight": "600", "margin-bottom": "8px", "display": "block", "color": "#191F3C"}),
-                dcc.Dropdown(
-                    id="section-filter",
-                    options=[{"label": "All Sections", "value": "all"}] + [{"label": section, "value": section} for section in available_sections],
-                    value="all",
-                    style={"width": "100%"}
-                ),
-            ], style={"flex": "1", "margin-right": "10px"}),
-            
-            html.Div([
-                html.Label("Filter by Category:", style={"font-weight": "600", "margin-bottom": "8px", "display": "block", "color": "#191F3C"}),
-                dcc.Dropdown(
-                    id="category-filter",
-                    options=[{"label": "All Categories", "value": "all"}] + [{"label": cat, "value": cat} for cat in available_categories],
-                    value="all",
-                    style={"width": "100%"}
-                ),
-            ], style={"flex": "1", "margin-left": "10px"}),
-        ], style={"display": "flex", "padding": "20px", "margin": "20px", "background": "white", "border-radius": "12px", "box-shadow": "0 2px 8px rgba(0,0,0,0.1)"}),
         
         # 3D Scatter chart with view controls
         html.Div([
@@ -248,6 +224,32 @@ def render_main_content(_):
             ),
         ], style={"padding": "20px", "margin": "20px", "background": "white", "border-radius": "12px", "box-shadow": "0 2px 8px rgba(0,0,0,0.1)"}),
         
+        # Dynamic Explanation section
+        html.Div(id="axis-explanation", children=[]),
+        
+        # Filters section
+        html.Div([
+            html.Div([
+                html.Label("Filter by Course Section:", style={"font-weight": "600", "margin-bottom": "8px", "display": "block", "color": "#191F3C"}),
+                dcc.Dropdown(
+                    id="section-filter",
+                    options=[{"label": "All Sections", "value": "all"}] + [{"label": section, "value": section} for section in available_sections],
+                    value="all",
+                    style={"width": "100%"}
+                ),
+            ], style={"flex": "1", "margin-right": "10px"}),
+            
+            html.Div([
+                html.Label("Filter by Author:", style={"font-weight": "600", "margin-bottom": "8px", "display": "block", "color": "#191F3C"}),
+                dcc.Dropdown(
+                    id="author-filter",
+                    options=[{"label": "All Authors", "value": "all"}] + [{"label": author, "value": author} for author in available_authors],
+                    value="all",
+                    style={"width": "100%"}
+                ),
+            ], style={"flex": "1", "margin-left": "10px"}),
+        ], style={"display": "flex", "padding": "20px", "margin": "20px", "background": "white", "border-radius": "12px", "box-shadow": "0 2px 8px rgba(0,0,0,0.1)"}),
+        
         # Selected reading details
         html.Div([
             html.H3("Reading Details", style={"color": "#191F3C", "margin-bottom": "16px"}),
@@ -256,90 +258,13 @@ def render_main_content(_):
                        style={"color": "#555457", "font-style": "italic", "text-align": "center", "padding": "40px"})
             ]),
         ], style={"padding": "20px", "margin": "20px", "background": "white", "border-radius": "12px", "box-shadow": "0 2px 8px rgba(0,0,0,0.1)"}),
-        
-        # Legend section
-        html.Div([
-            html.H3("Reading Categories", style={"color": "#191F3C", "margin-bottom": "16px"}),
-            html.Div([
-                html.Div([
-                    html.Div(style={"width": "20px", "height": "20px", "border-radius": "50%", "background": "#2A73FF", "margin-right": "10px"}),
-                    html.Span("Political Economy", style={"color": "#555457"})
-                ], style={"display": "flex", "align-items": "center", "margin-bottom": "8px"}),
-                html.Div([
-                    html.Div(style={"width": "20px", "height": "20px", "border-radius": "50%", "background": "#2ACC88", "margin-right": "10px"}),
-                    html.Span("Behavioral & Social", style={"color": "#555457"})
-                ], style={"display": "flex", "align-items": "center", "margin-bottom": "8px"}),
-                html.Div([
-                    html.Div(style={"width": "20px", "height": "20px", "border-radius": "50%", "background": "#FF6B6B", "margin-right": "10px"}),
-                    html.Span("Cultural & Innovation", style={"color": "#555457"})
-                ], style={"display": "flex", "align-items": "center", "margin-bottom": "8px"}),
-                html.Div([
-                    html.Div(style={"width": "20px", "height": "20px", "border-radius": "50%", "background": "#FFD93D", "margin-right": "10px"}),
-                    html.Span("Historical", style={"color": "#555457"})
-                ], style={"display": "flex", "align-items": "center", "margin-bottom": "8px"}),
-                html.Div([
-                    html.Div(style={"width": "20px", "height": "20px", "border-radius": "50%", "background": "#A78BFA", "margin-right": "10px"}),
-                    html.Span("Game Theory", style={"color": "#555457"})
-                ], style={"display": "flex", "align-items": "center"}),
-            ], style={"display": "flex", "flex-direction": "column"}),
-        ], style={"padding": "20px", "margin": "20px", "background": "white", "border-radius": "12px", "box-shadow": "0 2px 8px rgba(0,0,0,0.1)"}),
     ], style={"padding": "20px"})
-
-# Dynamic axis explanation callback
-@callback(
-    Output("axis-explanation", "children"),
-    [Input("x-axis-selector", "value"),
-     Input("y-axis-selector", "value"),
-     Input("z-axis-selector", "value")]
-)
-def update_axis_explanation(x_axis, y_axis, z_axis):
-    """Update the axis explanation based on selected axes"""
-    x_info = available_axes[x_axis]
-    y_info = available_axes[y_axis]
-    z_info = available_axes[z_axis]
-    
-    return html.Div([
-        html.H2("Understanding the Visualization", style={"color": "#191F3C", "margin-bottom": "16px"}),
-        html.Div([
-            html.Div([
-                html.H4(f"📊 X-Axis: {x_info['name']}", style={"color": x_info['color'], "margin-bottom": "8px"}),
-                html.P([
-                    html.Strong(f"1 = {x_info['min_label']}:"), f" {x_info['min_description']}",
-                    html.Br(),
-                    html.Strong(f"10 = {x_info['max_label']}:"), f" {x_info['max_description']}"
-                ], style={"font-size": "14px", "line-height": "1.8", "color": "#555457"}),
-            ], style={"flex": "1", "padding": "20px", "background": "#EEF5FF", "border-radius": "8px", "margin-right": "10px"}),
-            
-            html.Div([
-                html.H4(f"📈 Y-Axis: {y_info['name']}", style={"color": y_info['color'], "margin-bottom": "8px"}),
-                html.P([
-                    html.Strong(f"1 = {y_info['min_label']}:"), f" {y_info['min_description']}",
-                    html.Br(),
-                    html.Strong(f"10 = {y_info['max_label']}:"), f" {y_info['max_description']}"
-                ], style={"font-size": "14px", "line-height": "1.8", "color": "#555457"}),
-            ], style={"flex": "1", "padding": "20px", "background": "#E8F9F2", "border-radius": "8px", "margin": "0 10px"}),
-            
-            html.Div([
-                html.H4(f"🎨 Z-Axis: {z_info['name']}", style={"color": z_info['color'], "margin-bottom": "8px"}),
-                html.P([
-                    html.Strong(f"1 = {z_info['min_label']}:"), f" {z_info['min_description']}",
-                    html.Br(),
-                    html.Strong(f"10 = {z_info['max_label']}:"), f" {z_info['max_description']}",
-                    html.Br(),
-                    html.Em("(Shown in 3D space - rotate to explore!)")
-                ], style={"font-size": "14px", "line-height": "1.8", "color": "#555457"}),
-            ], style={"flex": "1", "padding": "20px", "background": "#FFF5E6", "border-radius": "8px", "margin-left": "10px"}),
-        ], style={"display": "flex", "margin-bottom": "20px"}),
-        
-        html.P("💡 Click on any point or use your mouse to rotate, zoom, and explore the 3D space.", 
-               style={"text-align": "center", "color": "#555457", "font-style": "italic", "font-size": "16px"}),
-    ], style={"padding": "30px", "margin": "20px", "background": "white", "border-radius": "12px", "box-shadow": "0 2px 8px rgba(0,0,0,0.1)"})
 
 # Bubble chart callback
 @callback(
     Output("bubble-chart", "figure"),
     [Input("section-filter", "value"),
-     Input("category-filter", "value"),
+     Input("author-filter", "value"),
      Input("x-axis-selector", "value"),
      Input("y-axis-selector", "value"),
      Input("z-axis-selector", "value"),
@@ -348,7 +273,7 @@ def update_axis_explanation(x_axis, y_axis, z_axis):
      Input("view-yz", "n_clicks"),
      Input("view-3d", "n_clicks")]
 )
-def update_bubble_chart(selected_section, selected_category, x_axis, y_axis, z_axis, 
+def update_bubble_chart(selected_section, selected_author, x_axis, y_axis, z_axis, 
                         view_xy_clicks, view_xz_clicks, view_yz_clicks, view_3d_clicks):
     """Update the 3D scatter chart based on filters and selected axes"""
     try:
@@ -357,8 +282,8 @@ def update_bubble_chart(selected_section, selected_category, x_axis, y_axis, z_a
         # Apply filters
         if selected_section and selected_section != "all":
             df = df[df['section'] == selected_section]
-        if selected_category and selected_category != "all":
-            df = df[df['category'] == selected_category]
+        if selected_author and selected_author != "all":
+            df = df[df['author'] == selected_author]
         
         if df.empty:
             return go.Figure().update_layout(title="No readings match the selected filters")
@@ -405,46 +330,54 @@ def update_bubble_chart(selected_section, selected_category, x_axis, y_axis, z_a
                 # Default 3D view
                 camera_view = dict(eye=dict(x=1.5, y=1.5, z=1.3), center=dict(x=0, y=0, z=0))
         
-        # Define colors for each category (solid colors for 3D)
-        category_colors = {
-            "Political Economy": "#2A73FF",
-            "Behavioral & Social": "#2ACC88",
-            "Cultural & Innovation": "#FF6B6B",
-            "Historical": "#FFD93D",
-            "Game Theory": "#A78BFA"
+        # Define colors for each author (solid colors for 3D)
+        # Authors with similar/shared authorship get the same color based on primary author
+        author_colors = {
+            "Acemoglu, Johnson, Robinson": "#FF6B6B",
+            "Acemoglu,  Robinson": "#FF6B6B",  # Same color as other Acemoglu works
+            "Aghion, Howitt, Mokyr": "#06B6D4",
+            "Basu": "#2A73FF",
+            "Bowles": "#2ACC88",
+            "Dixit": "#FFD93D",
+            "Greif": "#A78BFA",
+            "Mokyr": "#F97316",
+            "North, Weingast": "#EC4899",
+            "Ostrom": "#10B981",
+            "Roine": "#8B5CF6"
         }
         
         # Create 3D scatter chart
         fig = go.Figure()
         
-        for category in df['category'].unique():
-            df_cat = df[df['category'] == category].copy()
-            color = category_colors.get(category, "#999999")
+        for author in df['author'].unique():
+            df_author = df[df['author'] == author].copy()
+            color = author_colors.get(author, "#999999")
             
             # Prepare custom data for hover
             customdata = np.column_stack((
-                df_cat['description'].values,
-                df_cat['section'].values,
-                df_cat[x_axis].values,
-                df_cat[y_axis].values,
-                df_cat[z_axis].values
+                df_author['one_liner'].values,
+                df_author['section'].values,
+                df_author[x_axis].values,
+                df_author[y_axis].values,
+                df_author[z_axis].values
             ))
             
             fig.add_trace(go.Scatter3d(
-                x=df_cat[x_axis],
-                y=df_cat[y_axis],
-                z=df_cat[z_axis],
+                x=df_author[x_axis],
+                y=df_author[y_axis],
+                z=df_author[z_axis],
                 mode='markers',
-                name=category,
+                name=author,
                 marker=dict(
                     size=8,
                     color=color,
                     line=dict(width=0.5, color='white'),
                     opacity=0.85
                 ),
-                text=df_cat['reading'],
+                text=df_author['reading'],
                 customdata=customdata,
                 hovertemplate="<b>%{text}</b><br>" +
+                             "<i>%{customdata[0]}</i><br><br>" +
                              f"{x_info['short_name']}: %{{customdata[2]}}<br>" +
                              f"{y_info['short_name']}: %{{customdata[3]}}<br>" +
                              f"{z_info['short_name']}: %{{customdata[4]}}<br>" +
@@ -506,7 +439,7 @@ def update_bubble_chart(selected_section, selected_category, x_axis, y_axis, z_a
                 bgcolor="rgba(255,255,255,0.9)",
                 bordercolor="#C1CDE4",
                 borderwidth=1,
-                title=dict(text="Categories", font=dict(size=12))
+                title=dict(text="Authors", font=dict(size=12))
             ),
             height=800,
             margin=dict(l=0, r=0, t=80, b=0)
@@ -576,7 +509,7 @@ def display_reading_details(clickData, x_axis, y_axis, z_axis):
                     "font-weight": "700"
                 }),
                 html.Div([
-                    html.Span(reading['category'], style={
+                    html.Span(f"Author: {reading['author']}", style={
                         "background": "#EEF5FF",
                         "color": "#2A73FF",
                         "padding": "4px 12px",
@@ -623,10 +556,59 @@ def display_reading_details(clickData, x_axis, y_axis, z_axis):
             "border-radius": "8px",
             "border": "1px solid #EAEEF5"
         })
-        
     except Exception as e:
-        logger.error(f"Error displaying reading details: {str(e)}")
-        return html.P(f"Error loading details: {str(e)}", style={"color": "#DC3545"})
+        return html.P(f"Error loading reading details: {str(e)}", 
+                     style={"color": "red", "padding": "20px"})
+
+# Dynamic axis explanation callback
+@callback(
+    Output("axis-explanation", "children"),
+    [Input("x-axis-selector", "value"),
+     Input("y-axis-selector", "value"),
+     Input("z-axis-selector", "value")]
+)
+def update_axis_explanation(x_axis, y_axis, z_axis):
+    """Update the axis explanation based on selected axes"""
+    x_info = available_axes[x_axis]
+    y_info = available_axes[y_axis]
+    z_info = available_axes[z_axis]
+    
+    return html.Div([
+        html.H2("Understanding the Visualization", style={"color": "#191F3C", "margin-bottom": "16px"}),
+        html.Div([
+            html.Div([
+                html.H4(f"📊 X-Axis: {x_info['name']}", style={"color": x_info['color'], "margin-bottom": "8px"}),
+                html.P([
+                    html.Strong(f"1 = {x_info['min_label']}:"), f" {x_info['min_description']}",
+                    html.Br(),
+                    html.Strong(f"10 = {x_info['max_label']}:"), f" {x_info['max_description']}"
+                ], style={"font-size": "14px", "line-height": "1.8", "color": "#555457"}),
+            ], style={"flex": "1", "padding": "20px", "background": "#EEF5FF", "border-radius": "8px", "margin-right": "10px"}),
+            
+            html.Div([
+                html.H4(f"📈 Y-Axis: {y_info['name']}", style={"color": y_info['color'], "margin-bottom": "8px"}),
+                html.P([
+                    html.Strong(f"1 = {y_info['min_label']}:"), f" {y_info['min_description']}",
+                    html.Br(),
+                    html.Strong(f"10 = {y_info['max_label']}:"), f" {y_info['max_description']}"
+                ], style={"font-size": "14px", "line-height": "1.8", "color": "#555457"}),
+            ], style={"flex": "1", "padding": "20px", "background": "#E8F9F2", "border-radius": "8px", "margin": "0 10px"}),
+            
+            html.Div([
+                html.H4(f"🎨 Z-Axis: {z_info['name']}", style={"color": z_info['color'], "margin-bottom": "8px"}),
+                html.P([
+                    html.Strong(f"1 = {z_info['min_label']}:"), f" {z_info['min_description']}",
+                    html.Br(),
+                    html.Strong(f"10 = {z_info['max_label']}:"), f" {z_info['max_description']}",
+                    html.Br(),
+                    html.Em("(Shown in 3D space - rotate to explore!)")
+                ], style={"font-size": "14px", "line-height": "1.8", "color": "#555457"}),
+            ], style={"flex": "1", "padding": "20px", "background": "#FFF5E6", "border-radius": "8px", "margin-left": "10px"}),
+        ], style={"display": "flex", "margin-bottom": "20px"}),
+        
+        html.P("💡 Click on any point or use your mouse to rotate, zoom, and explore the 3D space.", 
+            style={"text-align": "center", "color": "#555457", "font-style": "italic", "font-size": "16px"}),
+    ], style={"padding": "30px", "margin": "20px", "background": "white", "border-radius": "12px", "box-shadow": "0 2px 8px rgba(0,0,0,0.1)"})
 
 if __name__ == "__main__":
     # Get port from environment variable (for Coolify/Docker deployment)
