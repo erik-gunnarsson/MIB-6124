@@ -45,7 +45,16 @@ def load_axis_definitions():
     """Load axis definitions from JSON file"""
     data_dir = Path(__file__).parent / "data"
     with open(data_dir / "axis_definitions.json", "r") as f:
-        return json.load(f)
+        axis_data = json.load(f)
+    
+    # Add max_value to each axis (default is 10, but some axes like alphabetical_order have different max)
+    for axis_key, axis_info in axis_data["axes"].items():
+        if axis_key == "alphabetical_order":
+            axis_info["max_value"] = 13  # 13 readings in alphabetical order
+        else:
+            axis_info["max_value"] = 10  # Default max value
+    
+    return axis_data
 
 def load_institutional_readings_data():
     """Load the institutional economics readings dataset from JSON file"""
@@ -307,9 +316,14 @@ def update_bubble_chart(selected_section, selected_author, x_axis, y_axis, z_axi
         y_padding = max(0.5, (y_max - y_min) * 0.1)
         z_padding = max(0.5, (z_max - z_min) * 0.1)
         
-        x_range = [max(0, x_min - x_padding), min(11, x_max + x_padding)]
-        y_range = [max(0, y_min - y_padding), min(11, y_max + y_padding)]
-        z_range = [max(0, z_min - z_padding), min(11, z_max + z_padding)]
+        # Use axis-specific max values
+        x_max_value = x_info.get('max_value', 10)
+        y_max_value = y_info.get('max_value', 10)
+        z_max_value = z_info.get('max_value', 10)
+        
+        x_range = [max(0, x_min - x_padding), min(x_max_value + 1, x_max + x_padding)]
+        y_range = [max(0, y_min - y_padding), min(y_max_value + 1, y_max + y_padding)]
+        z_range = [max(0, z_min - z_padding), min(z_max_value + 1, z_max + z_padding)]
         
         # Determine which view button was clicked most recently
         ctx = dash.callback_context
@@ -394,7 +408,7 @@ def update_bubble_chart(selected_section, selected_author, x_axis, y_axis, z_axi
             },
             scene=dict(
                 xaxis=dict(
-                    title=f"{x_info['description']}<br>(1={x_info['min_label']} → 10={x_info['max_label']})",
+                    title=f"{x_info['description']}<br>(1={x_info['min_label']} → {x_info.get('max_value', 10)}={x_info['max_label']})",
                     titlefont=dict(size=12, color='#191F3C'),
                     range=x_range,
                     gridcolor='#EAEEF5',
@@ -404,7 +418,7 @@ def update_bubble_chart(selected_section, selected_author, x_axis, y_axis, z_axi
                     backgroundcolor="white"
                 ),
                 yaxis=dict(
-                    title=f"{y_info['description']}<br>(1={y_info['min_label']} → 10={y_info['max_label']})",
+                    title=f"{y_info['description']}<br>(1={y_info['min_label']} → {y_info.get('max_value', 10)}={y_info['max_label']})",
                     titlefont=dict(size=12, color='#191F3C'),
                     range=y_range,
                     gridcolor='#EAEEF5',
@@ -414,7 +428,7 @@ def update_bubble_chart(selected_section, selected_author, x_axis, y_axis, z_axi
                     backgroundcolor="white"
                 ),
                 zaxis=dict(
-                    title=f"{z_info['description']}<br>(1={z_info['min_label']} → 10={z_info['max_label']})",
+                    title=f"{z_info['description']}<br>(1={z_info['min_label']} → {z_info.get('max_value', 10)}={z_info['max_label']})",
                     titlefont=dict(size=12, color='#191F3C'),
                     range=z_range,
                     gridcolor='#EAEEF5',
@@ -482,16 +496,17 @@ def display_reading_details(clickData, x_axis, y_axis, z_axis):
         dimension_rows = []
         for axis_key, axis_info in available_axes.items():
             value = reading[axis_key]
+            max_val = axis_info.get('max_value', 10)
             dimension_rows.append(
                 html.Div([
                     html.Div([
                         html.Strong(f"{axis_info['name']}: ", style={"min-width": "250px", "display": "inline-block"}),
-                        html.Span(f"{value}/10", style={"color": axis_info['color'], "font-weight": "700"}),
+                        html.Span(f"{value}/{max_val}", style={"color": axis_info['color'], "font-weight": "700"}),
                     ], style={"display": "flex", "align-items": "center", "margin-bottom": "8px"}),
                     html.Div([
                         html.Div(style={
                             "height": "8px",
-                            "width": f"{value * 10}%",
+                            "width": f"{(value / max_val) * 100}%",
                             "background": axis_info['color'],
                             "border-radius": "4px",
                             "transition": "width 0.3s ease"
@@ -581,7 +596,7 @@ def update_axis_explanation(x_axis, y_axis, z_axis):
                 html.P([
                     html.Strong(f"1 = {x_info['min_label']}:"), f" {x_info['min_description']}",
                     html.Br(),
-                    html.Strong(f"10 = {x_info['max_label']}:"), f" {x_info['max_description']}"
+                    html.Strong(f"{x_info.get('max_value', 10)} = {x_info['max_label']}:"), f" {x_info['max_description']}"
                 ], style={"font-size": "14px", "line-height": "1.8", "color": "#555457"}),
             ], style={"flex": "1", "padding": "20px", "background": "#EEF5FF", "border-radius": "8px", "margin-right": "10px"}),
             
@@ -590,7 +605,7 @@ def update_axis_explanation(x_axis, y_axis, z_axis):
                 html.P([
                     html.Strong(f"1 = {y_info['min_label']}:"), f" {y_info['min_description']}",
                     html.Br(),
-                    html.Strong(f"10 = {y_info['max_label']}:"), f" {y_info['max_description']}"
+                    html.Strong(f"{y_info.get('max_value', 10)} = {y_info['max_label']}:"), f" {y_info['max_description']}"
                 ], style={"font-size": "14px", "line-height": "1.8", "color": "#555457"}),
             ], style={"flex": "1", "padding": "20px", "background": "#E8F9F2", "border-radius": "8px", "margin": "0 10px"}),
             
@@ -599,7 +614,7 @@ def update_axis_explanation(x_axis, y_axis, z_axis):
                 html.P([
                     html.Strong(f"1 = {z_info['min_label']}:"), f" {z_info['min_description']}",
                     html.Br(),
-                    html.Strong(f"10 = {z_info['max_label']}:"), f" {z_info['max_description']}",
+                    html.Strong(f"{z_info.get('max_value', 10)} = {z_info['max_label']}:"), f" {z_info['max_description']}",
                     html.Br(),
                     html.Em("(Shown in 3D space - rotate to explore!)")
                 ], style={"font-size": "14px", "line-height": "1.8", "color": "#555457"}),
