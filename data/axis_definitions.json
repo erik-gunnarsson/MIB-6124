@@ -1,5 +1,15 @@
 {
   "axes": {
+    "alphabetical_order": {
+      "name": "Alphabetical Order",
+      "short_name": "Alphabetical",
+      "description": "Reading Order",
+      "min_label": "A",
+      "max_label": "Z",
+      "min_description": "Earlier in alphabetical order by author",
+      "max_description": "Later in alphabetical order by author",
+      "color": "#06B6D4"
+    },
     "culture_power": {
       "name": "Culture vs Power",
       "short_name": "Culture/Power",
@@ -62,7 +72,7 @@
     }
   },
   "default_axes": {
-    "x": "culture_power",
+    "x": "alphabetical_order",
     "y": "micro_macro",
     "z": "formal_informal"
   }
